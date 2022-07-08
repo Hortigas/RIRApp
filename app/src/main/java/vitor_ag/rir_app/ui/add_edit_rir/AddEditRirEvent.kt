@@ -6,5 +6,6 @@ sealed class AddEditRirEvent {
     data class OnDataDeRecebimentoChange(val dataDeRecebimento: String) : AddEditRirEvent()
     data class OnAddLocal(val local: String) : AddEditRirEvent()
     data class OnRemoveLocal(val local: String) : AddEditRirEvent()
-    object OnSaveRirClick : AddEditRirEvent()
+    object OnOpenScanner : AddEditRirEvent()
+    data class OnScan(val text: String) : AddEditRirEvent()
 }

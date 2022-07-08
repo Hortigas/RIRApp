@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import vitor_ag.rir_app.R
 import vitor_ag.rir_app.ui.add_edit_rir.dropdown.Dropdown
 import vitor_ag.rir_app.ui.add_edit_rir.dropdown.EditableDropdown
 import vitor_ag.rir_app.ui.add_edit_rir.dropdown.MultipleSelectionDropdown
@@ -25,13 +27,13 @@ import vitor_ag.rir_app.util.UiEvent
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditRirScreen(
-    onPopBackStack: () -> Unit,
+    onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: AddEditRirViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.PopBackStack -> onPopBackStack()
+                is UiEvent.Navigate -> onNavigate(event)
             }
         }
     }
@@ -135,6 +137,31 @@ fun AddEditRirScreen(
                             "Manual ou ficha técnica do produto / equipamento", "OK"
                         )
                     ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    onClick = {
+                        viewModel.onEvent(AddEditRirEvent.OnOpenScanner)
+                    }) {
+                    Icon(
+                        painterResource(
+                            R.drawable.round_qr_code_scanner_24
+                        ),
+                        contentDescription = "scan icon"
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = "Scan"
+                    )
+                }
+                Text(
+                    text = "scan: ${viewModel.scannerText}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp)

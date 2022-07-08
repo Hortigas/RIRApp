@@ -15,9 +15,6 @@ fun RirListScreen(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ShowSnackbar -> {
-
-                }
                 is UiEvent.Navigate -> onNavigate(event)
                 else -> Unit
             }

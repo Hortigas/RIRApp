@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import vitor_ag.rir_app.data.RirRepository
+import vitor_ag.rir_app.util.Routes
 import vitor_ag.rir_app.util.UiEvent
 import javax.inject.Inject
 
@@ -29,7 +32,9 @@ class AddEditRirViewModel @Inject constructor(
     private val _locais = mutableStateListOf<String>()
     val locais: List<String> = _locais
 
-    val _uiEvent = Channel<UiEvent>()
+    var scannerText by mutableStateOf("")
+
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onEvent(event: AddEditRirEvent) {
@@ -50,6 +55,17 @@ class AddEditRirViewModel @Inject constructor(
             is AddEditRirEvent.OnRemoveLocal -> {
                 _locais.remove(event.local)
             }
+            is AddEditRirEvent.OnOpenScanner -> {
+                sendUiEvent(UiEvent.Navigate(Routes.SCANNER_PAGE))
+            }
+            is AddEditRirEvent.OnScan -> {
+                scannerText = event.text
+                sendUiEvent(UiEvent.PopBackStack)
+            }
         }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch { _uiEvent.send(event) }
     }
 }
