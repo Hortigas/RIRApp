@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/xxvsv/AndroidStudioProjects/RIRApp/app/src/main/res/drawable/ic_empty_gallery.xml" value="0.161" />
+        <entry key="..\:/Users/xxvsv/AndroidStudioProjects/RIRApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.161" />
         <entry key="..\:/Users/xxvsv/AndroidStudioProjects/RIRApp/app/src/main/res/drawable/round_qr_code_scanner_24.xml" value="0.161" />
+        <entry key="..\:/Users/xxvsv/AndroidStudioProjects/RIRApp/app/src/main/res/xml/filepaths.xml" value="0.23233695652173914" />
       </map>
     </option>
   </component>

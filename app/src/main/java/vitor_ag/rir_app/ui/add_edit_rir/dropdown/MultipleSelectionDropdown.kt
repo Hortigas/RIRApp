@@ -15,7 +15,7 @@ fun MultipleSelectionDropdown(
     onAdd: (String) -> Unit,
     onRemove: (String) -> Unit,
     valuesList: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -35,8 +35,7 @@ fun MultipleSelectionDropdown(
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
                 )
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            }
         )
         DropdownMenu(
             modifier = Modifier.exposedDropdownSize(matchTextFieldWidth = true),

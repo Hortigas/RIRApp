@@ -4,9 +4,13 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -20,7 +24,7 @@ fun DatePicker(
     objectName: String,
     objectValue: String,
     onChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -52,7 +56,6 @@ fun DatePicker(
                     }
                 }
             },
-        trailingIcon = { Icon(Icons.Rounded.DateRange, "datePicker") },
-        colors = ExposedDropdownMenuDefaults.textFieldColors()
+        trailingIcon = { Icon(Icons.Rounded.DateRange, "datePicker") }
     )
 }

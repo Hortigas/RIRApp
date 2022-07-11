@@ -12,7 +12,7 @@ fun EditableDropdown(
     objectValue: String,
     onChange: (String) -> Unit,
     valuesList: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -32,8 +32,7 @@ fun EditableDropdown(
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
                 )
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            }
         )
         // filter options based on text field value
         val filteringOptions =
