@@ -1,5 +1,6 @@
 package vitor_ag.rir_app.ui.add_edit_rir.dropdown
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,7 +36,9 @@ fun Dropdown(
             }
         )
         DropdownMenu(
-            modifier = Modifier.exposedDropdownSize(matchTextFieldWidth = true),
+            modifier = Modifier
+                .exposedDropdownSize(matchTextFieldWidth = true)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
@@ -43,7 +46,12 @@ fun Dropdown(
         ) {
             valuesList.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { Text(text = selectionOption) },
+                    text = {
+                        Text(
+                            text = selectionOption,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    },
                     onClick = {
                         onChange(selectionOption)
                         expanded = false

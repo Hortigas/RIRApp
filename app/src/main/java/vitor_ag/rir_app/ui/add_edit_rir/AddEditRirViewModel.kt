@@ -1,6 +1,6 @@
 package vitor_ag.rir_app.ui.add_edit_rir
 
-import android.net.Uri
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,22 +8,37 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import vitor_ag.rir_app.data.Photo
+import vitor_ag.rir_app.data.Rir
 import vitor_ag.rir_app.data.RirRepository
+import vitor_ag.rir_app.util.FileManeger
+import vitor_ag.rir_app.util.LocationLiveData
 import vitor_ag.rir_app.util.Routes
 import vitor_ag.rir_app.util.UiEvent
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditRirViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val repository: RirRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    val rirs = repository.getRirs()
+
+    var shouldShowPhotoDialog by mutableStateOf(false)
+    var shouldShowCreateRirDialog by mutableStateOf(false)
 
     //Dados gerais
     var fornecedor by mutableStateOf("")
@@ -97,10 +112,42 @@ class AddEditRirViewModel @Inject constructor(
         private set
 
     //Registro fotográfico
-    val photoGallery = mutableStateListOf<Uri>()
+    private val locationLiveData = LocationLiveData(context)
+    fun startLocationUpdates() {
+        locationLiveData.startLocationUpdates()
+    }
+
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH)
+    private val uniqueIdGen = SimpleDateFormat("HHmmssSSS", Locale.ENGLISH)
+    val photoGallery = mutableStateListOf<Photo>()
+    val photoCategoryList = listOf(
+        "Recebimento do material",
+        "Descarga do Material",
+        "Armazenamento do material",
+        "Inspeção do material"
+    )
+    var selectedPhotoCategory by mutableStateOf("")
+
+    init {
+        val fileImage = File("${context.cacheDir}/photos")
+        val images = fileImage.listFiles()
+        if (!images.isNullOrEmpty())
+            images.forEach {
+                photoGallery.add(
+                    Photo(
+                        uri = it.toString(),
+                        createdDate = "",
+                        gps = ""
+                    )
+                )
+            }
+    }
 
     fun onEvent(event: AddEditRirEvent) {
         when (event) {
+            is AddEditRirEvent.OnOpenNavBar -> {
+                sendUiEvent(UiEvent.ShowNavBar)
+            }
             is AddEditRirEvent.OnFornecedorChange -> {
                 fornecedor = event.fornecedor
             }
@@ -116,6 +163,10 @@ class AddEditRirViewModel @Inject constructor(
             }
             is AddEditRirEvent.OnCategoriaChange -> {
                 categoria = event.categoria
+            }
+            is AddEditRirEvent.OnDocumentacaoChange -> {
+                documentacao[event.id] =
+                    ValidationListItem(documentacao[event.id].title, event.selectedOption)
             }
             is AddEditRirEvent.OnOpenScanner -> {
                 sendUiEvent(UiEvent.Navigate(Routes.SCANNER_PAGE))
@@ -142,6 +193,10 @@ class AddEditRirViewModel @Inject constructor(
             is AddEditRirEvent.OnObservacoesChange -> {
                 observacoes = event.observacoes
             }
+            is AddEditRirEvent.OnConferenciaTecnicaChange -> {
+                conferenciaTecnica[event.id] =
+                    ValidationListItem(conferenciaTecnica[event.id].title, event.selectedOption)
+            }
             is AddEditRirEvent.OnAprovacao1Change -> {
                 aprovacao1 = event.aprovacao
             }
@@ -152,15 +207,86 @@ class AddEditRirViewModel @Inject constructor(
                 statusRir = event.statusRir
             }
             is AddEditRirEvent.OnPhotoTaken -> {
-                photoGallery.add(event.photo)
+                val fileName = event.photo.toString().split("/").last()
+                val path = File(context.cacheDir, "photos/$fileName").path
+                photoGallery.add(
+                    Photo(
+                        uri = path,
+                        createdDate = dateFormat.format(Date()),
+                        gps = locationLiveData.value?.latitude + ',' + locationLiveData.value?.longitude
+                    )
+                )
+                selectedPhotoCategory = when (photoGallery.size) {
+                    1 -> photoCategoryList[0]
+                    2 -> photoCategoryList[1]
+                    3 -> photoCategoryList[2]
+                    else -> photoCategoryList[3]
+                }
+                shouldShowPhotoDialog = true
             }
             is AddEditRirEvent.OnRemovePhoto -> {
                 photoGallery.removeAt(event.index)
             }
-            is AddEditRirEvent.OnDocumentacaoChange -> {
-                documentacao[event.id]
+            is AddEditRirEvent.OnPhotoCategoryChange -> {
+                selectedPhotoCategory = event.category
+            }
+            is AddEditRirEvent.OnPhotoCategoryConfirm -> {
+                val photo = photoGallery.last()
+                photo.category = event.category
+                photoGallery[photoGallery.lastIndex] = photo
+            }
+            is AddEditRirEvent.OnOpenPopupRir -> {
+                shouldShowCreateRirDialog = true
+            }
+            is AddEditRirEvent.OnCreateRir -> {
+                var uniqueID = uniqueIdGen.format(Date()).toInt()
+                val photos = FileManeger.savePhotosOnStorage(
+                    context = context,
+                    uniqueId = uniqueID,
+                    photos = photoGallery
+                )
+                viewModelScope.launch {
+                    repository.insertRir(
+                        Rir(
+                            id = uniqueID,
+                            fornecedor = fornecedor,
+                            local = locais.joinToString(),
+                            dataDeRecebimento = dataDeRecebimento,
+                            categoria = categoria,
+                            documentacaoString = documentacao.joinToString("|") { it.selectedOption },
+                            notasFiscaisString = Gson().toJson(
+                                notas.map { NotaFiscal(Nota = it) }
+                            ),
+                            itensInspecionados = itensInspecionados,
+                            observacoes = observacoes,
+                            conferenciaTecnicaString = conferenciaTecnica.joinToString("|") { "${it.title}#${it.selectedOption}" },
+                            aprovacao1 = aprovacao1,
+                            aprovacao2 = aprovacao2,
+                            statusDaRir = statusRir,
+                            horarioDaInspecao = dateFormat.format(Date()),
+                            responsavel = "Vitor",
+                            photos = photos
+                        )
+                    )
+                    clearFields()
+                }
             }
         }
+    }
+
+    private fun clearFields() {
+        photoGallery.clear()
+        fornecedor = ""
+        locais.clear()
+        dataDeRecebimento = ""
+        categoria = ""
+        documentacao.clear()
+        notas.clear()
+        itensInspecionados = ""
+        observacoes = ""
+        aprovacao1 = ""
+        aprovacao2 = ""
+        statusRir = ""
     }
 
     private fun sendUiEvent(event: UiEvent) {

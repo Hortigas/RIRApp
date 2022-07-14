@@ -13,7 +13,7 @@ class ComposeFileProvider : FileProvider(
             val directory = File(context.cacheDir, "photos")
             directory.mkdirs()
             val file = File.createTempFile(
-                "selected_image_",
+                "temp_photo_",
                 ".jpg",
                 directory
             )

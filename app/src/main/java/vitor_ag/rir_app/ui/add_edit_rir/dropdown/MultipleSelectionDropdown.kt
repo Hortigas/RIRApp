@@ -1,5 +1,6 @@
 package vitor_ag.rir_app.ui.add_edit_rir.dropdown
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -38,7 +39,9 @@ fun MultipleSelectionDropdown(
             }
         )
         DropdownMenu(
-            modifier = Modifier.exposedDropdownSize(matchTextFieldWidth = true),
+            modifier = Modifier
+                .exposedDropdownSize(matchTextFieldWidth = true)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
@@ -46,7 +49,12 @@ fun MultipleSelectionDropdown(
         ) {
             valuesList.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(text = item) },
+                    text = {
+                        Text(
+                            text = item,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    },
                     onClick = {
                         if (objectValue.contains(item))
                             onRemove(item)
@@ -57,7 +65,8 @@ fun MultipleSelectionDropdown(
                         if (objectValue.contains(item)) {
                             Icon(
                                 Icons.Rounded.CheckCircle,
-                                contentDescription = "checked"
+                                contentDescription = "checked",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }

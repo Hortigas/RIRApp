@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gal_background">#E3E5E7</color>
+    <color name="gal_background">#222A36</color>
     <color name="gal_photo_bg">#fff</color>
     <color name="gal_stroke">#75a4fe</color>
     <color name="gal_photo_fill">#e8f0fe</color>

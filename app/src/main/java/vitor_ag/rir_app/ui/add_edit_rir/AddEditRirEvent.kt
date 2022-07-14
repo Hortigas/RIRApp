@@ -1,8 +1,10 @@
 package vitor_ag.rir_app.ui.add_edit_rir
 
+import android.content.Context
 import android.net.Uri
 
 sealed class AddEditRirEvent {
+    object OnOpenNavBar : AddEditRirEvent()
     data class OnFornecedorChange(val fornecedor: String) : AddEditRirEvent()
     data class OnAddLocal(val local: String) : AddEditRirEvent()
     data class OnRemoveLocal(val local: String) : AddEditRirEvent()
@@ -16,9 +18,16 @@ sealed class AddEditRirEvent {
     data class OnRemoveNota(val nota: String) : AddEditRirEvent()
     data class OnItensInspecionadosChange(val itensInspecionados: String) : AddEditRirEvent()
     data class OnObservacoesChange(val observacoes: String) : AddEditRirEvent()
+    data class OnConferenciaTecnicaChange(val id: Int, val selectedOption: String) :
+        AddEditRirEvent()
+
     data class OnAprovacao1Change(val aprovacao: String) : AddEditRirEvent()
     data class OnAprovacao2Change(val aprovacao: String) : AddEditRirEvent()
     data class OnStatusRirChange(val statusRir: String) : AddEditRirEvent()
     data class OnPhotoTaken(val photo: Uri) : AddEditRirEvent()
     data class OnRemovePhoto(val index: Int) : AddEditRirEvent()
+    data class OnPhotoCategoryChange(val category: String) : AddEditRirEvent()
+    data class OnPhotoCategoryConfirm(val category: String) : AddEditRirEvent()
+    object OnOpenPopupRir : AddEditRirEvent()
+    data class OnCreateRir(val context: Context) : AddEditRirEvent()
 }

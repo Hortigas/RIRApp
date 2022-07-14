@@ -1,5 +1,6 @@
 package vitor_ag.rir_app.ui.add_edit_rir.dropdown
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,6 +40,7 @@ fun EditableDropdown(
             valuesList.filter { it.contains(objectValue, ignoreCase = true) }
         if (filteringOptions.isNotEmpty()) {
             ExposedDropdownMenu(
+                modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                 expanded = expanded,
                 onDismissRequest = {
                     expanded = false
@@ -46,7 +48,12 @@ fun EditableDropdown(
             ) {
                 filteringOptions.forEach { selectionOption ->
                     DropdownMenuItem(
-                        text = { Text(text = selectionOption) },
+                        text = {
+                            Text(
+                                text = selectionOption,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
                         onClick = {
                             onChange(selectionOption)
                             expanded = false

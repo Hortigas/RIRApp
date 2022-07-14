@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.util
+package vitor_ag.rir_app.ui.add_edit_rir
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -18,27 +18,31 @@ fun CameraButton(
     onClick: (Uri) -> Unit,
     modifier: Modifier = Modifier.fillMaxWidth()
 ) {
+    val context = LocalContext.current
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
+
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
-            if (success && imageUri != null) {
+            if (success) {
                 onClick(imageUri!!)
             }
         }
     )
-    val context = LocalContext.current
+
 
     Button(
         modifier = modifier,
         onClick = {
-            val uri = ComposeFileProvider.getImageUri(context)
-            imageUri = uri
-            cameraLauncher.launch(uri)
+            imageUri = ComposeFileProvider.getImageUri(context)
+            cameraLauncher.launch(imageUri)
         },
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+        colors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+            containerColor = MaterialTheme.colorScheme.secondary
+        )
     ) {
         Text(text = "ADICIONAR FOTO")
     }

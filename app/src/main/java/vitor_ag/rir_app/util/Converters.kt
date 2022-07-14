@@ -1,16 +1,21 @@
 package vitor_ag.rir_app.util
 
 import androidx.room.TypeConverter
-import java.util.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import vitor_ag.rir_app.data.Photo
 
 class Converters {
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
+    fun fromString(value: String?): ArrayList<Photo?>? {
+        val type = object : TypeToken<List<Photo?>?>() {}.type
+        return Gson().fromJson(value, type)
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+    fun fromImageList(imageList: List<Photo?>?): String? {
+        if (imageList == null) return null
+        val type = object : TypeToken<List<Photo?>?>() {}.type
+        return Gson().toJson(imageList, type)
     }
 }
