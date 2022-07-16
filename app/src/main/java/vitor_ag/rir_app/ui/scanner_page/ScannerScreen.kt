@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirEvent
 import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirViewModel
-import vitor_ag.rir_app.util.CameraScanner
+import vitor_ag.rir_app.ui.add_edit_rir.compose.CameraScanner
 import vitor_ag.rir_app.util.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)

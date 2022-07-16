@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

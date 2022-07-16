@@ -16,9 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import vitor_ag.rir_app.R
-import vitor_ag.rir_app.ui.add_edit_rir.dropdown.Dropdown
-import vitor_ag.rir_app.ui.add_edit_rir.dropdown.EditableDropdown
-import vitor_ag.rir_app.ui.add_edit_rir.dropdown.MultipleSelectionDropdown
+import vitor_ag.rir_app.ui.add_edit_rir.compose.*
+import vitor_ag.rir_app.ui.add_edit_rir.compose.compose.ValidationList
+import vitor_ag.rir_app.ui.add_edit_rir.compose.dropdown.Dropdown
+import vitor_ag.rir_app.ui.add_edit_rir.compose.dropdown.EditableDropdown
+import vitor_ag.rir_app.ui.add_edit_rir.compose.dropdown.MultipleSelectionDropdown
 import vitor_ag.rir_app.util.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -248,8 +250,6 @@ fun AddEditRirScreen(
                         Text(text = "GERAR RIR")
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    if (rirs.value.isNotEmpty())
-                        Text(text = "test:" + rirs.value.first().photos.first().uri)
                 }
             }
         )

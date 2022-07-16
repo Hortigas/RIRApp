@@ -1,6 +1,7 @@
 package vitor_ag.rir_app.ui.add_edit_rir
 
 import android.content.Context
+import android.media.ExifInterface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -17,10 +18,8 @@ import kotlinx.coroutines.launch
 import vitor_ag.rir_app.data.Photo
 import vitor_ag.rir_app.data.Rir
 import vitor_ag.rir_app.data.RirRepository
-import vitor_ag.rir_app.util.FileManeger
-import vitor_ag.rir_app.util.LocationLiveData
-import vitor_ag.rir_app.util.Routes
-import vitor_ag.rir_app.util.UiEvent
+import vitor_ag.rir_app.ui.add_edit_rir.compose.compose.ValidationListItem
+import vitor_ag.rir_app.util.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -133,11 +132,22 @@ class AddEditRirViewModel @Inject constructor(
         val images = fileImage.listFiles()
         if (!images.isNullOrEmpty())
             images.forEach {
+                val exif = ExifInterface(it.toString())
+
+                val latitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF)
+                val latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
+                    ?.let { (if (latitudeRef == "E") 1 else -1) * GpsConverter.convertToDouble(it) }
+
+                val longitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF)
+                val longitude = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+                    ?.let { (if (longitudeRef == "N") 1 else -1) * GpsConverter.convertToDouble(it) }
+
                 photoGallery.add(
                     Photo(
                         uri = it.toString(),
-                        createdDate = "",
-                        gps = ""
+                        createdDate = exif.getAttribute(ExifInterface.TAG_DATETIME).toString(),
+                        gps = "${latitude.toString()},${longitude.toString()}",
+                        category = exif.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION).toString()
                     )
                 )
             }
@@ -209,11 +219,38 @@ class AddEditRirViewModel @Inject constructor(
             is AddEditRirEvent.OnPhotoTaken -> {
                 val fileName = event.photo.toString().split("/").last()
                 val path = File(context.cacheDir, "photos/$fileName").path
+                val createdDate = dateFormat.format(Date())
+                val latitude = locationLiveData.value?.latitude
+                val longitude = locationLiveData.value?.longitude
+                val exif = ExifInterface(path)
+                exif.setAttribute(
+                    ExifInterface.TAG_DATETIME,
+                    createdDate
+                )
+                if (latitude != null && longitude != null) {
+                    exif.setAttribute(
+                        ExifInterface.TAG_GPS_LATITUDE,
+                        GpsConverter.convertToDMS(latitude.toDouble())
+                    )
+                    exif.setAttribute(
+                        ExifInterface.TAG_GPS_LATITUDE_REF,
+                        GpsConverter.latitudeRef(latitude.toDouble())
+                    );
+                    exif.setAttribute(
+                        ExifInterface.TAG_GPS_LONGITUDE,
+                        GpsConverter.convertToDMS(longitude.toDouble())
+                    )
+                    exif.setAttribute(
+                        ExifInterface.TAG_GPS_LONGITUDE_REF,
+                        GpsConverter.longitudeRef(longitude.toDouble())
+                    );
+                }
+                exif.saveAttributes()
                 photoGallery.add(
                     Photo(
                         uri = path,
-                        createdDate = dateFormat.format(Date()),
-                        gps = locationLiveData.value?.latitude + ',' + locationLiveData.value?.longitude
+                        createdDate = createdDate,
+                        gps = "$latitude,$longitude"
                     )
                 )
                 selectedPhotoCategory = when (photoGallery.size) {
@@ -225,6 +262,7 @@ class AddEditRirViewModel @Inject constructor(
                 shouldShowPhotoDialog = true
             }
             is AddEditRirEvent.OnRemovePhoto -> {
+                File(photoGallery[event.index].uri).delete()
                 photoGallery.removeAt(event.index)
             }
             is AddEditRirEvent.OnPhotoCategoryChange -> {
@@ -232,6 +270,9 @@ class AddEditRirViewModel @Inject constructor(
             }
             is AddEditRirEvent.OnPhotoCategoryConfirm -> {
                 val photo = photoGallery.last()
+                val exif = ExifInterface(photo.uri)
+                exif.setAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION, event.category)
+                exif.saveAttributes()
                 photo.category = event.category
                 photoGallery[photoGallery.lastIndex] = photo
             }

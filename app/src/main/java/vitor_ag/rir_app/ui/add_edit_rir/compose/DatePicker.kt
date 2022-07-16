@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker

@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirEvent
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirViewModel
 
 @Composable
 fun CreateRirDialog(

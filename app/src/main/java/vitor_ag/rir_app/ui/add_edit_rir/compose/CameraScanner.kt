@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.util
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import android.util.Size
 import androidx.camera.core.CameraSelector
@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import vitor_ag.rir_app.util.ScannerAnalyzer
 
 @Composable
 fun CameraScanner(

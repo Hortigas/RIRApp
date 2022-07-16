@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -7,7 +7,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import vitor_ag.rir_app.ui.add_edit_rir.dropdown.Dropdown
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirEvent
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirViewModel
+import vitor_ag.rir_app.ui.add_edit_rir.compose.dropdown.Dropdown
 
 @Composable
 fun PhotoDialog(

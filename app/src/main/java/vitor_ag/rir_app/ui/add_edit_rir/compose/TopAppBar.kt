@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir
+package vitor_ag.rir_app.ui.add_edit_rir.compose
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirEvent
+import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirViewModel
 
 @Composable
 fun TopAppBar(

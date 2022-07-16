@@ -1,4 +1,4 @@
-package vitor_ag.rir_app.ui.add_edit_rir.dropdown
+package vitor_ag.rir_app.ui.add_edit_rir.compose.dropdown
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
