@@ -3,7 +3,7 @@ package vitor_ag.rir_app.ui.theme
 import androidx.compose.ui.graphics.Color
 
 //LIGHT THEME
-val md_theme_light_primary = Color(0xFF061734)             //ok
+val md_theme_light_primary = Color(0xFF001434)             //ok
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)           //ok
 val md_theme_light_primaryContainer = Color(0xffABADC9)    //ok
 val md_theme_light_onPrimaryContainer = Color(0xffffffff)  //ok
@@ -41,7 +41,7 @@ val md_theme_light_surfaceTint = Color(0xffff00000)         //Color(0xFF325DA8)
 
 //DARK THEME
 val md_theme_dark_primary = Color(0xffaec6ff)               //AEC6FF
-val md_theme_dark_onPrimary = Color(0xFF002e6a)             //002E6A
+val md_theme_dark_onPrimary = Color(0xFF16191f)             //002E6A
 val md_theme_dark_primaryContainer = Color(0xFF242B39)      //343F52
 val md_theme_dark_onPrimaryContainer = Color(0xFFffffff)    //
 

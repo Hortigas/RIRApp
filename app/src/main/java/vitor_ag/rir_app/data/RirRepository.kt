@@ -11,4 +11,6 @@ interface RirRepository {
     suspend fun getRirById(id: Int): Rir?
 
     fun getRirs(): Flow<List<Rir>>
+
+    suspend fun sendToSharepoint(rir: Rir)
 }

@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.compose.NavHost
@@ -15,9 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import dagger.hilt.android.AndroidEntryPoint
-import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirScreen
-import vitor_ag.rir_app.ui.add_edit_rir.AddEditRirViewModel
-import vitor_ag.rir_app.ui.scanner_page.ScannerScreen
+import vitor_ag.rir_app.feature_rir.presentation.add_edit_rir.AddEditRirScreen
 import vitor_ag.rir_app.ui.theme.RIRAppTheme
 import vitor_ag.rir_app.util.Routes
 
@@ -50,7 +47,6 @@ class MainActivity : ComponentActivity() {
                 }
             )
             RIRAppTheme {
-                val viewModel: AddEditRirViewModel = hiltViewModel()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -58,13 +54,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(Routes.ADD_EDIT_RIR) {
                         AddEditRirScreen(
-                            viewModel = viewModel,
                             onNavigate = { navController.navigate(it.route) })
-                    }
-                    composable(Routes.SCANNER_PAGE) {
-                        ScannerScreen(
-                            viewModel = viewModel,
-                            onPopBackStack = { navController.popBackStack() })
                     }
                 }
             }

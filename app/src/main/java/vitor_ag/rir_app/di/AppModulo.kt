@@ -14,10 +14,10 @@ import retrofit2.create
 import vitor_ag.rir_app.data.RirDatabase
 import vitor_ag.rir_app.data.RirRepository
 import vitor_ag.rir_app.data.RirRepositoryImpl
-import vitor_ag.rir_app.data.remote.AuthApi
-import vitor_ag.rir_app.data.remote.AuthRepository
-import vitor_ag.rir_app.data.remote.AuthRepositoryImpl
 import vitor_ag.rir_app.data.remote.SharepointApi
+import vitor_ag.rir_app.data.remote.authSharepoint.AuthApi
+import vitor_ag.rir_app.data.remote.authSharepoint.AuthRepository
+import vitor_ag.rir_app.data.remote.authSharepoint.AuthRepositoryImpl
 import javax.inject.Singleton
 
 
@@ -61,6 +61,7 @@ object AppModulo {
         return Retrofit.Builder()
             .baseUrl("https://andradegutierrez365.sharepoint.com")
             .client(authRepository.client)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create()
     }

@@ -5,28 +5,28 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Rir(
-    @PrimaryKey val id: Int,
-    val fornecedor: String,
-    val local: String,
-    val dataDeRecebimento: String,
-    val categoria: String,
-    val documentacaoString: String,
-    val notasFiscaisString: String,
-    val itensInspecionados: String,
-    val observacoes: String,
-    val conferenciaTecnicaString: String,
-    val aprovacao1: String,
-    val aprovacao2: String,
-    val statusDaRir: String,
-    val horarioDaInspecao: String,
-    val responsavel: String,
-    val photos: List<Photo>
+    @PrimaryKey var id: Int,
+    var title: String,
+    var fornecedor: String,
+    var local: String,
+    var dataDeRecebimento: String,
+    var categoria: String,
+    var documentacaoString: String,
+    var notasFiscaisString: String,
+    var itensInspecionados: String,
+    var observacoes: String,
+    var conferenciaTecnicaString: String,
+    var materiaisRecebidos: String,
+    var naoConformidade: String,
+    var statusDaRir: String,
+    var horarioDaInspecao: String,
+    var photos: List<Photo>?
 )
 
 @Entity
 data class Photo(
-    val uri: String,
-    val createdDate: String,
-    val gps: String,
+    var uri: String,
+    var createdDate: String,
+    var gps: String,
     var category: String = "Inspeção do Material"
 )

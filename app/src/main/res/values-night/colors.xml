@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="gal_background">#222A36</color>
-    <color name="gal_photo_bg">#fff</color>
-    <color name="gal_stroke">#75a4fe</color>
-    <color name="gal_photo_fill">#e8f0fe</color>
+    <color name="gal_photo_bg">#f0f0f0</color>
+    <color name="gal_stroke">#3d5a80</color>
+    <color name="gal_photo_fill">#c4c4c4</color>
 </resources>
