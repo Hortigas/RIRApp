@@ -11,13 +11,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import vitor_ag.rir_app.data.RirDatabase
-import vitor_ag.rir_app.data.RirRepository
-import vitor_ag.rir_app.data.RirRepositoryImpl
-import vitor_ag.rir_app.data.remote.SharepointApi
-import vitor_ag.rir_app.data.remote.authSharepoint.AuthApi
-import vitor_ag.rir_app.data.remote.authSharepoint.AuthRepository
-import vitor_ag.rir_app.data.remote.authSharepoint.AuthRepositoryImpl
+import vitor_ag.rir_app.features.feature_rir.data.RirDatabase
+import vitor_ag.rir_app.features.feature_rir.data.RirRepository
+import vitor_ag.rir_app.features.feature_rir.data.RirRepositoryImpl
+import vitor_ag.rir_app.features.feature_rir.data.remote.SharepointApi
+import vitor_ag.rir_app.features.feature_rir.data.remote.authSharepoint.AuthApi
+import vitor_ag.rir_app.features.feature_rir.data.remote.authSharepoint.AuthRepository
+import vitor_ag.rir_app.features.feature_rir.data.remote.authSharepoint.AuthRepositoryImpl
 import javax.inject.Singleton
 
 

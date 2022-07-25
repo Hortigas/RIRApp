@@ -3,7 +3,7 @@ package vitor_ag.rir_app.util
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import vitor_ag.rir_app.data.Photo
+import vitor_ag.rir_app.features.feature_rir.domain.model.Photo
 
 class Converters {
     @TypeConverter

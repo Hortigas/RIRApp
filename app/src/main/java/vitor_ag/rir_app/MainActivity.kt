@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import dagger.hilt.android.AndroidEntryPoint
-import vitor_ag.rir_app.feature_rir.presentation.add_edit_rir.AddEditRirScreen
+import vitor_ag.rir_app.features.feature_rir.presentation.add_edit_rir.AddEditRirScreen
 import vitor_ag.rir_app.ui.theme.RIRAppTheme
 import vitor_ag.rir_app.util.Routes
 

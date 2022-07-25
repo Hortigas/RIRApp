@@ -2,7 +2,7 @@ package vitor_ag.rir_app.util
 
 import android.content.Context
 import android.util.Log
-import vitor_ag.rir_app.data.Photo
+import vitor_ag.rir_app.features.feature_rir.domain.model.Photo
 import java.io.File
 
 object FileManeger {
